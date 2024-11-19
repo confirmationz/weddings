@@ -1,0 +1,152 @@
+body {
+    font-family: 'Fredoka', sans-serif; /* החל את הגופן Fredoka */
+    text-align: center;
+    background-color: #e8e4d3;
+    color: #5a5a5a;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* מונע גלילה אופקית */
+}
+
+.container {
+    display: flex;
+    justify-content: center; /* ממרכז אופקית */
+    align-items: flex-start; /* התמונה תתחיל מהחלק העליון של הדף */
+    flex-direction: column; /* מוודא שהתמונה והכרטיס יהיו אחד מתחת לשני */
+}
+
+.header-image {
+    display: block;
+    width: 100%; /* רוחב התמונה מותאם לרוחב הדף */
+    height: 100vh; /* הגובה של התמונה הוקטן ל-50% מהמסך */
+    object-fit: cover; /* התמונה מתמלאת בגבולות שלה מבלי להסתיר חלקים ממנה */
+    margin-bottom: 0; /* אין רווח בין התמונה לטקסט */
+    border-radius: 15px; /* עיגול פינות התמונה */
+}
+
+/* מדיה קווריז עבור מכשירים עם מסך קטן (למשל אייפון) */
+@media (max-width: 768px) {
+    .header-image {
+        height: 60vh; /* הגבלת גובה התמונה על מכשירים קטנים */
+        object-fit: cover; /* מאפשר לתמונה למלא את החלל */
+    }
+    .card {
+        width: 90%; /* רוחב הכרטיס מותאם למסך קטן */
+        margin-left: auto;
+        margin-right: auto; /* ממרכז את הכרטיס */
+    }
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 15px; /* עיגול פינות האזור */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 80%; /* רוחב הכרטיס תואם לתמונה */
+    max-width: 400px; /* הגבלת רוחב הכרטיס */
+    margin-top: -20px; /* דוחף את הכרטיס כלפי מעלה, כך שהוא מתחיל מתחת לתמונה */
+    margin-left: auto;
+    margin-right: auto; /* ממרכז את הכרטיס */
+    font-family: 'Fredoka', sans-serif; /* החל את הגופן Fredoka גם בתוך ה- card */
+}
+
+.title {
+    font-size: 2.2rem;
+    color: #d4a373;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 2rem;
+    color: #b59283;
+    margin-bottom: 20px;
+}
+
+.date, .venue {
+    font-size: 1.6rem;
+    font-weight: bold; /* הוספת משקל לגופן */
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.button {
+    display: inline-block;
+    margin: 15px auto;
+    padding: 12px 25px;
+    background: #d4a373;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.button:hover {
+    background: #b5838d;
+    transform: scale(1.05); /* אפקט הגדלה */
+}
+
+form {
+    margin-top: -60px;
+    display: flex;
+    flex-direction: column; /* מיקום השדות בצורה אנכית */
+    justify-content: space-between;
+    height: 100%; /* הכרטיס יתפוס את כל הגובה */
+}
+
+input[type="tel"], input[type="number"] {
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    width: calc(100% - 30px);
+    text-align: center;
+    font-size: 1rem;
+}
+
+#response-message {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 20px;
+    color: #d4a373;
+}
+
+.large-title {
+    font-size: 1.6rem;
+    font-weight: bold;
+    position: relative;
+    top: -25px; /* העלה את הכותרת ב-10 פיקסלים */
+}
+
+.time {
+    font-size: 1.4rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+    position: relative;
+    top: -48px; /* העלה את השעות ב-10 פיקסלים */
+}
+
+.large-title-hupa {
+    font-size: 1.6rem;
+    font-weight: bold;
+    position: relative;
+    top: -60px; /* העלה את הכותרת ב-10 פיקסלים */
+}
+
+.time-v2 {
+    font-size: 1.4rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+    position: relative;
+    top: -80px; /* העלה את השעות ב-10 פיקסלים */
+}
+
+/* כותרת קטנה מתחת לשדה כמות המגיעים */
+.small-title {
+    font-size: 0.9rem;  /* גודל קטן יותר */
+    color: #6c757d;   /* צבע כהה יותר */
+    margin-top: 5px;   /* רווח קטן מעל הכותרת */
+    font-weight: normal; /* להוריד את המשקל, פחות מודגש */
+}
