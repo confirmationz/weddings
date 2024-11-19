@@ -4,16 +4,24 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
     const phone = document.getElementById('phone').value.trim();
     const guests = document.getElementById('guests').value.trim();
     const responseMessage = document.getElementById('response-message');
+    const submitButton = document.querySelector('button[type="submit"]');  // כפתור השליחה
 
-    // איפוס הודעה קיימת
-    responseMessage.style.display = 'none';
-    responseMessage.textContent = "";
+    // אם כבר בוצעה שליחה, מנע שליחה נוספת
+    if (submitButton.disabled) {
+        return; // יוצא מהפונקציה אם הכפתור מושבת
+    }
 
-    // בדיקת שדות
-    if (!phone) {
+    // השבתת כפתור השליחה כדי למנוע לחיצה נוספת למשך 10 שניות
+    submitButton.disabled = true;
+    submitButton.style.backgroundColor = '#ccc'; // שינוי צבע הכפתור כדי להראות שהוא מושבת
+
+    const phoneRegex = /^05\d{8}$/;
+    if (!phone || !phoneRegex.test(phone)) {
         responseMessage.style.color = 'red';
-        responseMessage.textContent = "יש להזין מספר פלאפון.";
+        responseMessage.textContent = "יש להזין מספר פלאפון תקין.";
         responseMessage.style.display = 'block';
+        submitButton.disabled = false; // ביטול השבתת כפתור אם יש טעות
+        submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
         return;
     }
 
@@ -21,35 +29,54 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
         responseMessage.style.color = 'red';
         responseMessage.textContent = "יש להזין כמות מגיעים.";
         responseMessage.style.display = 'block';
+        submitButton.disabled = false; // ביטול השבתת כפתור אם יש טעות
+        submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
         return;
     }
+
+    // הצגת הודעת תודה מיידית
+    responseMessage.style.color = 'green';
+    responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
+    responseMessage.style.display = 'block';
 
     // שליחת הנתונים ל-Google Sheets דרך ה-Web App
     fetch("https://script.google.com/macros/s/AKfycbwWSHSC0JHS4QHLe2wFTbl5qRD_T58ZlRkXDwrdd9nxzqEjUctlvfKqKEcd_LtK0NSM/exec", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",  // הגדרת התוכן כ-JSON
         },
-        body: `phone=${encodeURIComponent(phone)}&guests=${encodeURIComponent(guests)}`,
-    })
-        .then((response) => response.text())
-        .then((data) => {
-            if (data === "Success") {
-                responseMessage.style.color = 'green';
-                responseMessage.textContent = "תודה על המענה, נפגש על הרחבה!";
-                responseMessage.style.display = 'block';
-                // ניקוי השדות
-                document.getElementById('rsvp-form').reset();
-            } else {
-                responseMessage.style.color = 'red';
-                responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
-                responseMessage.style.display = 'block';
-            }
+        body: JSON.stringify({
+            phone: phone,
+            guests: guests
         })
-        .catch((error) => {
+    })
+    .then((response) => {
+        // בודקים אם התשובה היא JSON
+        return response.json(); 
+    })
+    .then((data) => {
+        if (data === "Success") {
+            responseMessage.style.color = 'green';
+            responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
+            responseMessage.style.display = 'block';
+        } else {
             responseMessage.style.color = 'red';
             responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
             responseMessage.style.display = 'block';
-            console.error('Error:', error);
-        });
+        }
+    })
+    .catch((error) => {
+        // הודעת שגיאה במקרה של כישלון בשליחה
+        responseMessage.style.color = 'red';
+        responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
+        responseMessage.style.display = 'block';
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        // החזרת כפתור השליחה לפעולה לאחר 10 שניות
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
+        }, 10000);
+    });
 });
