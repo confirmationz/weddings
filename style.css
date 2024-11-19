@@ -64,7 +64,7 @@ body {
 
 .date, .venue {
     font-size: 1.6rem;
-    font-weight: bold; /* הוספת משקל לגופן */
+    font-weight: bold;  /* הוספת משקל לגופן */
     position: relative;
     margin-bottom: 10px;
 }
@@ -80,16 +80,15 @@ body {
     font-size: 1rem;
     cursor: pointer;
     border: none;
-    transition: background 0.3s, transform 0.3s;
+    transition: background 0.3s;
 }
 
 .button:hover {
     background: #b5838d;
-    transform: scale(1.05); /* אפקט הגדלה */
 }
 
 form {
-    margin-top: -60px;
+    margin-top: -75px;
     display: flex;
     flex-direction: column; /* מיקום השדות בצורה אנכית */
     justify-content: space-between;
@@ -145,7 +144,7 @@ input[type="tel"], input[type="number"] {
 
 /* כותרת קטנה מתחת לשדה כמות המגיעים */
 .small-title {
-    font-size: 0.9rem;  /* גודל קטן יותר */
+    font-size: 1rem;  /* גודל קטן יותר */
     color: #6c757d;   /* צבע כהה יותר */
     margin-top: 5px;   /* רווח קטן מעל הכותרת */
     font-weight: normal; /* להוריד את המשקל, פחות מודגש */
