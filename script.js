@@ -19,7 +19,7 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
     const phoneRegex = /^05\d{8}$/;
     if (!phone || !phoneRegex.test(phone)) {
         responseMessage.style.color = 'red';
-        responseMessage.textContent = "יש להזין מספר פלאפון תקין.";
+        responseMessage.textContent = ".יש להזין מספר פלאפון תקין";
         responseMessage.style.display = 'block';
         submitButton.disabled = false; // ביטול השבתת כפתור אם יש טעות
         submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
