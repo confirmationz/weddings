@@ -4,34 +4,16 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
     const phone = document.getElementById('phone').value.trim();
     const guests = document.getElementById('guests').value.trim();
     const responseMessage = document.getElementById('response-message');
-    const submitButton = document.querySelector('button[type="submit"]');  // כפתור השליחה
-
-    // אם כבר בוצעה שליחה, מנע שליחה נוספת
-    if (submitButton.disabled) {
-        return; // יוצא מהפונקציה אם הכפתור מושבת
-    }
-
-    // השבתת כפתור השליחה כדי למנוע לחיצה נוספת למשך 10 שניות
-    submitButton.disabled = true;
-    submitButton.style.backgroundColor = '#ccc'; // שינוי צבע הכפתור כדי להראות שהוא מושבת
-
-    // הצגת הודעת תודה מיידית
-    responseMessage.style.color = 'green';
-    responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
-    responseMessage.style.display = 'block';
 
     // איפוס הודעה קיימת
-    setTimeout(() => {
-        responseMessage.style.display = 'none';  // מחביא את ההודעה אחרי שהודענו תודה
-    }, 2000);  // החביא את ההודעה אחרי 2 שניות
+    responseMessage.style.display = 'none';
+    responseMessage.textContent = "";
 
     // בדיקת שדות
     if (!phone) {
         responseMessage.style.color = 'red';
         responseMessage.textContent = "יש להזין מספר פלאפון.";
         responseMessage.style.display = 'block';
-        submitButton.disabled = false; // ביטול השבתת כפתור אם יש טעות
-        submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
         return;
     }
 
@@ -39,8 +21,6 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
         responseMessage.style.color = 'red';
         responseMessage.textContent = "יש להזין כמות מגיעים.";
         responseMessage.style.display = 'block';
-        submitButton.disabled = false; // ביטול השבתת כפתור אם יש טעות
-        submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
         return;
     }
 
@@ -55,38 +35,21 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
         .then((response) => response.text())
         .then((data) => {
             if (data === "Success") {
-                // עדכון הודעה לאחר שליחה אם הייתה הצלחה
                 responseMessage.style.color = 'green';
-                responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
+                responseMessage.textContent = "תודה על המענה, נפגש על הרחבה!";
                 responseMessage.style.display = 'block';
+                // ניקוי השדות
+                document.getElementById('rsvp-form').reset();
             } else {
-                // הודעת שגיאה במקרה של כישלון
                 responseMessage.style.color = 'red';
                 responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
                 responseMessage.style.display = 'block';
             }
         })
         .catch((error) => {
-            // הודעת שגיאה במקרה של כישלון בשליחה
             responseMessage.style.color = 'red';
             responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
             responseMessage.style.display = 'block';
             console.error('Error:', error);
-        })
-        .finally(() => {
-            // החזרת כפתור השליחה לפעולה לאחר 10 שניות
-            setTimeout(() => {
-                submitButton.disabled = false;
-                submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
-            }, 10000); // 10 שניות
         });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    confetti({
-        particleCount: 200,  // כמות הנפצים
-        spread: 70,          // פיזור הנפצים
-        origin: { y: 0.6 },  // המיקום שממנו תצא האנימציה
-        colors: ['#dab087', '#f8f0e8', '#f8f0e8', '#25180b', '#9b642f'],  // הצבעים של הנפצים
-    });
 });
