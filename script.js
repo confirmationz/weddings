@@ -15,6 +15,7 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
     submitButton.disabled = true;
     submitButton.style.backgroundColor = '#ccc'; // שינוי צבע הכפתור כדי להראות שהוא מושבת
 
+    // בדיקת שדות
     const phoneRegex = /^05\d{8}$/;
     if (!phone || !phoneRegex.test(phone)) {
         responseMessage.style.color = 'red';
@@ -39,44 +40,53 @@ document.getElementById('rsvp-form').addEventListener('submit', function (event)
     responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
     responseMessage.style.display = 'block';
 
+ 
+
     // שליחת הנתונים ל-Google Sheets דרך ה-Web App
     fetch("https://script.google.com/macros/s/AKfycbwWSHSC0JHS4QHLe2wFTbl5qRD_T58ZlRkXDwrdd9nxzqEjUctlvfKqKEcd_LtK0NSM/exec", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",  // הגדרת התוכן כ-JSON
+            "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
-            phone: phone,
-            guests: guests
+        body: `phone=${encodeURIComponent(phone)}&guests=${encodeURIComponent(guests)}`,
+    })
+        .then((response) => response.text())
+        .then((data) => {
+            if (data === "Success") {
+                // עדכון הודעה לאחר שליחה אם הייתה הצלחה
+                responseMessage.style.color = 'green';
+                responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
+                responseMessage.style.display = 'block';
+            } else {
+                // הודעת שגיאה במקרה של כישלון
+                responseMessage.style.color = 'red';
+                responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
+                responseMessage.style.display = 'block';
+            }
         })
-    })
-    .then((response) => {
-        // בודקים אם התשובה היא JSON
-        return response.json(); 
-    })
-    .then((data) => {
-        if (data === "Success") {
-            responseMessage.style.color = 'green';
-            responseMessage.textContent = "!תודה על המענה, נפגש על הרחבה";
-            responseMessage.style.display = 'block';
-        } else {
+        .catch((error) => {
+            // הודעת שגיאה במקרה של כישלון בשליחה
             responseMessage.style.color = 'red';
             responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
             responseMessage.style.display = 'block';
-        }
-    })
-    .catch((error) => {
-        // הודעת שגיאה במקרה של כישלון בשליחה
-        responseMessage.style.color = 'red';
-        responseMessage.textContent = "אירעה שגיאה. נסה שוב.";
-        responseMessage.style.display = 'block';
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        // החזרת כפתור השליחה לפעולה לאחר 10 שניות
-        setTimeout(() => {
-            submitButton.disabled = false;
-            submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
-        }, 10000);
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            // החזרת כפתור השליחה לפעולה לאחר 10 שניות
+            setTimeout(() => {
+                submitButton.disabled = false;
+                submitButton.style.backgroundColor = '#d4a373'; // החזרת הצבע המקורי
+            }, 10000); // 10 שניות
+        });
+});
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // קונפטי ברגע שנטען הדף
+    confetti({
+        particleCount: 400, // כמות הנפצים
+        spread: 120,       // יזור הנפצים
+        origin: { y: 0.6 }, // המיקום שממנו יוצאים הנפצים
+        colors: ['#dab087', '#f8f0e8', '#f8f0e8', '#25180b', '#9b642f'], // הצבעים של הנפצים
     });
 });
