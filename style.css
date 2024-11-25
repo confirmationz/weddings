@@ -151,9 +151,9 @@ input[type="tel"], input[type="number"] {
     font-weight: normal; /* להוריד את המשקל, פחות מודגש */
 }
 
-.small-info {
+.protect-info {
     font-size: 1rem; /* גודל פונט קטן יותר */
-    color: #b59283; /* צבע אפור */
+    color: #b59283 !important; /* צבע אפור */
     margin-top: -5px; /* מרווח שלילי קטן מעל השורה */
     margin-bottom: 10px; /* מרווח קטן מתחת לשורה */
     text-align: center; /* מיקום טקסט מרכזי */
