@@ -150,3 +150,14 @@ input[type="tel"], input[type="number"] {
     margin-top: 5px;   /* רווח קטן מעל הכותרת */
     font-weight: normal; /* להוריד את המשקל, פחות מודגש */
 }
+
+.small-info {
+    font-size: 1rem; /* גודל פונט קטן יותר */
+    color: #b59283; /* צבע אפור */
+    margin-top: -5px; /* מרווח שלילי קטן מעל השורה */
+    margin-bottom: 10px; /* מרווח קטן מתחת לשורה */
+    text-align: center; /* מיקום טקסט מרכזי */
+    position: relative; /* מאפשר משחק עם מיקום */
+    top: 5px; /* הזזה אנכית למטה */
+}
+
